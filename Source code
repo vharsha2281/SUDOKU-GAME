@@ -1,0 +1,84 @@
+#For creating a Sudoku Game
+#requirments of knowledge
+
+#Do you know what is a function?
+#Do you know how to use for loop?
+#Do you kno how to use if else statements?
+#then you are good to go...
+
+#lets divide it into 3 steps!
+
+
+#start
+#Sudoku Puzzel
+board = [
+    [7,8,0,4,0,0,1,2,0],
+    [6,0,0,0,7,5,0,0,9],
+    [0,0,0,6,0,1,0,7,8],
+    [0,0,7,0,4,0,2,6,0],
+    [0,0,1,0,5,0,9,3,0],
+    [9,0,4,0,6,0,0,0,5],
+    [0,7,0,3,0,0,0,1,2],
+    [1,2,0,0,0,7,4,0,0],
+    [0,4,9,2,0,6,0,0,7]
+]
+
+#rules of sudoku: 
+# 1). same number should not appear in the row and column
+# 2). same number should not appear in the given quare on the board
+
+#Now let's write a code to satisfy the above rules:
+def possible(row, column, number):
+    #importing sudoku using global keyword.
+    global board
+    
+    #to check if the number appearing in the row.
+    for i in range(0,9):
+        if board[row][i] == column:
+            return False
+    
+    #to check if the number appearing in the column
+    for i in range(0,9):
+        if board[i][column] == number:
+            return False
+    
+    #To check if the number is appearing in the given square
+    x0 = (column // 3) * 3
+    y0 = (row // 3) * 3
+    
+    #the above function cheks for the square according to the given column and row
+    for i in range(0,3):
+        for j in range(0,3):
+            if board[y0+i][x0+j] == number:
+                  return False
+    return True
+#the function possible() is used to check if the given input is true or false
+
+#now let's write a python program to auto solve the Sudoku by itself
+
+def solve():
+    global board
+    for row in range(0,9):
+        for column in range(0,9):
+            if board[row][column] == 0:#Cheking the position is zero or not to proceed to solve
+                for number in range(1,10):
+                    if possible(row, column, number):#importing possible() function
+                        board[row][column] = number
+                        
+                        solve()
+                        board[row][column] = 0    
+    #lets make the output in more unerstandable
+    for i in range(len(board)):
+        
+        if i % 3 == 0 and i != 0:
+            print(" - - - - - - - - - - - - - ")
+        for j in range(len(board[0])):
+            if j%3 == 0 and j != 0:                     
+                print(" | ", end="")
+            if j == 8:
+                print(board[i][j])
+            else:
+                 print(str(board[i][j])," ",end="")
+    input("more possible solutions")
+
+solve()
